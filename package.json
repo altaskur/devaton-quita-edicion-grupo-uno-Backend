@@ -1,0 +1,39 @@
+{
+  "name": "devaton-quita-edicion-grupo-uno-backend",
+  "version": "0.1.0",
+  "description": "Backend del proyecto del equipo uno de la quita devathon",
+  "main": "main.js",
+  "scripts": {
+    "dev": "nodemon ./src/main.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/altaskur/devaton-quita-edicion-grupo-uno-Backend.git"
+  },
+  "keywords": [
+    "Express",
+    "devathon",
+    "programacion_es"
+  ],
+  "author": "Gaston-Herrlein, MiguelDecode, Altaskur",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/altaskur/devaton-quita-edicion-grupo-uno-Backend/issues"
+  },
+  "homepage": "https://github.com/altaskur/devaton-quita-edicion-grupo-uno-Backend#readme",
+  "dependencies": {
+    "bcrypt": "^5.1.0",
+    "cors": "^2.8.5",
+    "dotenv": "^16.3.1",
+    "express-validator": "^7.0.1",
+    "jsonwebtoken": "^9.0.1",
+    "pg-promise": "^11.5.1"
+  },
+  "devDependencies": {
+    "eslint": "^8.45.0",
+    "eslint-config-airbnb-base": "^15.0.0",
+    "eslint-plugin-import": "^2.27.5",
+    "morgan": "^1.10.0",
+    "nodemon": "^3.0.1"
+  }
+}
