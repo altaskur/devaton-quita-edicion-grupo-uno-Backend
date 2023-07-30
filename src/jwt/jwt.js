@@ -1,8 +1,8 @@
 const jws = require('jsonwebtoken');
 require('dotenv').config();
 
-function generateToken(email, nombre) {
-  const payload = { email, nombre };
+function generateToken(email, name) {
+  const payload = { email, name };
   const options = { expiresIn: '6d' };
 
   const token = jws.sign(payload, process.env.JWT_SECRET, options);
