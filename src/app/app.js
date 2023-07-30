@@ -12,3 +12,5 @@ const corsOptions = {
 
 // Preparamos CORS
 app.use(cors(corsOptions));
+
+module.exports = app;
