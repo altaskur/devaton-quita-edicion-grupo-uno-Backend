@@ -10,15 +10,15 @@ function generateToken(email, name) {
 }
 
 function verifyToken(req, res, next) {
-  // Pedimos el token en el header de la petición
+  // Check if token is provided
   const token = req.headers.authorization;
   if (!token) return res.status(401).send({ error: 'No token provided' });
 
   try {
-    // Comprobamos que el token es válido
+    // Check if token is valid
     const decoded = jws.verify(token, process.env.JWT_SECRET);
     req.user = decoded;
-    // Pasamos al siguiente middleware
+    // Next middleware
     return next();
   } catch (err) {
     return res.status(401).send({ error: 'Invalid token' });

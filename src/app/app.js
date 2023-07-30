@@ -10,7 +10,6 @@ const corsOptions = {
   optionsSuccessStatus: 200,
 };
 
-// Preparamos CORS
 app.use(cors(corsOptions));
 
 module.exports = app;
