@@ -12,4 +12,8 @@ const corsOptions = {
 
 app.use(cors(corsOptions));
 
+const loginRouter = require('../router/login');
+
+app.use('/login', loginRouter);
+
 module.exports = app;
