@@ -9,19 +9,19 @@ const cn = {
   password: process.env.DB_PASSWORD,
 };
 
-const Emails = async () => {
+const isEmails = async (email) => {
   const db = pgp(cn);
-  const emails = await db.query('SELECT email FROM PetPal');
-  // console.log('Lista de emails', emails);
-  pgp.end();
-  return emails;
+  const emails = await db.query('SELECT email FROM pruebausers');
+  console.log('Lista de emails', emails);
+  await pgp.end();
+  return emails.map((value) => value.email).includes(email);
 };
 
 const UsersName = async () => {
   const db = pgp(cn);
-  const users = await db.query('SELECT name FROM PetPal');
+  const users = await db.query('SELECT first_name, last_name FROM pruebausers');
   console.log('Lista de usuarios', users);
-  pgp.end();
+  await pgp.end();
   return users;
 };
 
@@ -30,23 +30,12 @@ const InsertUser = async (userName, email, hash) => {
   // eslint-disable-next-line no-template-curly-in-string
   const newUser = await db.query('INSERT INTO PetPal (name, email, password) values (${userName}, ${email}, ${hash})', { userName, email, hash });
   console.log(newUser);
-  pgp.end();
+  await pgp.end();
   return newUser;
 };
 
 module.exports = {
-  Emails,
+  isEmails,
   UsersName,
   InsertUser,
 };
-
-/*
-              PetPal
- id |   name   |      email       | password
-----+----------+------------------+----------
-  1 | Usuario1 | usr@email.com    | password
-  2 | Usuario2 | email2@email.com | password
-  3 | Usuario3 | email3@email.com | password
-  4 | Usuario4 | email4@email.com | password
-  5 | Usuario5 | email5@email.com | password
-*/

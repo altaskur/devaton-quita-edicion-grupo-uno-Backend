@@ -1,13 +1,11 @@
-const { Emails, InsertUser } = require('../db/db');
+const { isEmails, InsertUser } = require('../db/db');
 const encriptarPassword = require('../auth/bcrypt');
 
 const Register = async (req, res) => {
   const { userName, email, password } = req.body;
   console.log({ userName, email, password });
   try {
-    console.log('Verificacion de email', Emails().map((value) => value.email).includes(email));
-    /* ================ CUANDO ME PUEDA CONECTAR A LA BD PONERLE ESAS VARIABLES ================= */
-    if (Emails().map((value) => value.email).includes(email)) {
+    if (isEmails()) {
       res.status(409).json({ message: 'The user you are trying to register already exists.' });
     } else {
       const hash = await encriptarPassword(password);
