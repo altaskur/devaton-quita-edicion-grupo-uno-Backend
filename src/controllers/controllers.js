@@ -1,11 +1,11 @@
-const { isEmails, InsertUser } = require('../db/db');
+const { Emails, InsertUser } = require('../db/db');
 const encriptarPassword = require('../auth/bcrypt');
 
 const Register = async (req, res) => {
   const { userName, email, password } = req.body;
-  console.log({ userName, email, password });
+  Emails(email).then((usr) => console.log('Valor recuperado del metodo Email', usr));
   try {
-    if (isEmails()) {
+    if (Emails()) {
       res.status(409).json({ message: 'The user you are trying to register already exists.' });
     } else {
       const hash = await encriptarPassword(password);

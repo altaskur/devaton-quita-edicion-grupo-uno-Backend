@@ -1,4 +1,5 @@
 const pgp = require('pg-promise')();
+const { ParameterizedQuery: PQ } = require('pg-promise');
 require('dotenv').config();
 
 const cn = {
@@ -9,12 +10,32 @@ const cn = {
   password: process.env.DB_PASSWORD,
 };
 
+const Emails = async (email) => {
+  const findUser = new PQ({ text: 'SELECT email FROM pruebausers' });
+  const db = pgp(cn);
+  db.many(findUser)
+    .then((user) => {
+      console.log('Recuperando valor de query', user);
+      let flag = false;
+      if (user === email) {
+        flag = true;
+      }
+      return flag;
+    })
+    .catch((error) => error);
+};
+
+/*
 const isEmails = async (email) => {
   const db = pgp(cn);
-  const emails = await db.query('SELECT email FROM pruebausers');
-  console.log('Lista de emails', emails);
+  // const emails = await db.query('SELECT email FROM pruebausers');
+  let emails;
+  db.query('SELECT email FROM pruebausers')
+    .then((res) => { emails = res; })
+    .catch((error) => { emails = error; });
+  console.log(emails);
   await pgp.end();
-  return emails.map((value) => value.email).includes(email);
+  // return emails.map((value) => value.email).includes(email);
 };
 
 const UsersName = async () => {
@@ -33,9 +54,8 @@ const InsertUser = async (userName, email, hash) => {
   await pgp.end();
   return newUser;
 };
+*/
 
 module.exports = {
-  isEmails,
-  UsersName,
-  InsertUser,
+  Emails,
 };
