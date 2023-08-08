@@ -3,7 +3,7 @@ require('dotenv').config();
 
 function generateToken(email, name) {
   const payload = { email, name };
-  const options = { expiresIn: '6d' };
+  const options = { expiresIn: '5m' };
 
   const token = jws.sign(payload, process.env.JWT_SECRET, options);
   return token;
