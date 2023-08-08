@@ -14,19 +14,18 @@ const Register = async (req, res) => {
   if (password !== password2) return res.status(501).json({ status: 'Contraseña incorrecta' });
   const id = v4();
   const hash = await encryptPassword(password);
-  const user = await db.any('INSERT INTO users (user_id, full_name, nick_name, email, password) VALUES (${id}, ${name}, ${nickName}, ${email}, ${hash})', {
+  db.any('INSERT INTO users (user_id, full_name, nick_name, email, password) VALUES (${id}, ${name}, ${nickName}, ${email}, ${hash})', {
     id,
     name,
     nickName,
     email,
     hash,
-  });
-  return res.status(200).json({
+  }).then(() => res.status(200).json({
     status: 'Usuario creado correctamente',
     usr: name,
     nickname: nickName,
     email,
-  });
+  })).catch(() => res.status(500).json({ status: 'El usuario ya existente' }));
 };
 
 module.exports = {
