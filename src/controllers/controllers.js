@@ -1,29 +1,34 @@
-const { Emails, InsertUser } = require('../db/db');
-const encriptarPassword = require('../auth/bcrypt');
+const { v4 } = require('uuid');
+const { db } = require('../db/db');
+const encryptPassword = require('../auth/bcrypt');
 
 const Register = async (req, res) => {
-  const { userName, email, password } = req.body;
-  Emails(email).then((usr) => console.log('Valor recuperado del metodo Email', usr));
-  try {
-    if (Emails()) {
-      res.status(409).json({ message: 'The user you are trying to register already exists.' });
-    } else {
-      const hash = await encriptarPassword(password);
-      res.status(201).json({ message: 'User created successfully.' });
-      InsertUser(userName, email, hash);
-    }
-  } catch (error) {
-    return res.status(500).json({ message: 'Server error. Failed to connect to the server.', status: error });
-  } finally {
-    // eslint-disable-next-line no-unsafe-finally
-    return res;
-  }
+  const {
+    name,
+    nickName,
+    email,
+    password,
+    password2,
+  } = req.body;
+  if (!password) return res.status(501).json({ status: 'No he encontrado ninguna contraseña' });
+  if (password !== password2) return res.status(501).json({ status: 'Contraseña incorrecta' });
+  const id = v4();
+  const hash = await encryptPassword(password);
+  const user = await db.any('INSERT INTO users (user_id, full_name, nick_name, email, password) VALUES (${id}, ${name}, ${nickName}, ${email}, ${hash})', {
+    id,
+    name,
+    nickName,
+    email,
+    hash,
+  });
+  return res.status(200).json({
+    status: 'Usuario creado correctamente',
+    usr: name,
+    nickname: nickName,
+    email,
+  });
 };
 
 module.exports = {
   Register,
 };
-
-/*
-    POR ALGUNA RAZON NO SE ESTAN RESOLVIENDO CORRECTAMENTE LAS PROMESAS
-*/
