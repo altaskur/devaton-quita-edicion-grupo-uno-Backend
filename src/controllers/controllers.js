@@ -28,6 +28,11 @@ const Register = async (req, res) => {
   })).catch(() => res.status(500).json({ status: 'El usuario ya existente' }));
 };
 
+const OrderServices = async (req, res) => {
+  
+};
+
 module.exports = {
   Register,
+  OrderServices,
 };
