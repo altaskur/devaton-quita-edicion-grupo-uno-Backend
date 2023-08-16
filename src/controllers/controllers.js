@@ -10,8 +10,8 @@ const Register = async (req, res) => {
     password,
     password2,
   } = req.body;
-  if (!password) return res.status(501).json({ status: 'No he encontrado ninguna contraseña' });
-  if (password !== password2) return res.status(501).json({ status: 'Contraseña incorrecta' });
+  if (!password) return res.status(501).json({ error: 'No he encontrado ninguna contraseña' });
+  if (password !== password2) return res.status(501).json({ error: 'Contraseña incorrecta' });
   const id = v4();
   const hash = await encryptPassword(password);
   db.any('INSERT INTO users (user_id, full_name, nick_name, email, password) VALUES (${id}, ${name}, ${nickName}, ${email}, ${hash})', {
@@ -21,15 +21,16 @@ const Register = async (req, res) => {
     email,
     hash,
   }).then(() => res.status(200).json({
-    status: 'Usuario creado correctamente',
+    mesagge: 'Usuario creado correctamente',
     usr: name,
     nickname: nickName,
     email,
-  })).catch(() => res.status(500).json({ status: 'El usuario ya existente' }));
+  })).catch(() => res.status(500).json({ error: 'El usuario ya existente' }));
 };
 
 const OrderServices = async (req, res) => {
-  
+  const { id } = req.body;
+  db.any('');
 };
 
 module.exports = {

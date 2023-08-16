@@ -9,13 +9,3 @@ const encryptPassword = async (psw) => {
 };
 
 module.exports = encryptPassword;
-
-/*
-    try {
-    const haltedPassword = await bcrypt.hashSync(contrasena, salt);
-    req.body.contrasena = haltedPassword;
-    next();
-  } catch (error) {
-    return res.status(501).json({ status: error });
-  }
-*/
