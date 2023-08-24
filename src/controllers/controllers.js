@@ -30,7 +30,10 @@ const Register = async (req, res) => {
 
 const OrderServices = async (req, res) => {
   const { id } = req.body;
-  db.any('');
+  const user = await db.any('SELECT title, description FROM serveice WHERE id IN (SELECT id FROM users WHERE city_id IN (SELECT city_id FROM users WHERE id=${id}))', {id});
+  if (user.length === 0) return res.status(501).json({ error: 'Usuario inexistente' });
+  console.log(user);
+  res.json({ usuarios: user });
 };
 
 module.exports = {
