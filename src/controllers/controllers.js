@@ -35,6 +35,7 @@ const OrderServices = async (req, res, next) => {
   const { id } = req.body;
   const services = await db.any('SELECT title, description FROM serveice WHERE id IN (SELECT id FROM users WHERE city_id IN (SELECT city_id FROM users WHERE id=${id}))', {id});
   if (services.length === 0) return res.status(501).json({ error: 'No existen servicios en tu ciudad' });
+
   res.json({ usuarios: services });
 };
 
