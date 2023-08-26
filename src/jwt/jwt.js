@@ -1,31 +1,24 @@
-const jws = require('jsonwebtoken');
+const jwt = require('jsonwebtoken');
 require('dotenv').config();
 
-function generateToken(email, name) {
-  const payload = { email, name };
-  const options = { expiresIn: '5m' };
-
-  const token = jws.sign(payload, process.env.JWT_SECRET, options);
+const generateToken = (payload) => {
+  const options = { expiresIn: '15m' };
+  const token = jwt.sign(payload, process.env.JWT_SECRET, options);
   return token;
-}
+};
 
-function verifyToken(req, res, next) {
-  // Check if token is provided
+const verifyToken = (req, res, next) => {
   const token = req.headers.authorization;
-  if (!token) return res.status(401).send({ error: 'No token provided' });
-
+  if (!token) return res.status(401).json({ message: 'Token not found' });
   try {
-    // Check if token is valid
-    const decoded = jws.verify(token, process.env.JWT_SECRET);
+    const decoded = jwt.verify(token, process.env.JWT_SECRET);
     req.user = decoded;
-    // Next middleware
     return next();
-  } catch (err) {
-    return res.status(401).send({ error: 'Invalid token' });
+  } catch (error) {
+    return res.status(401).json({ message: 'Expired or invalid token' });
   }
-}
-
+};
 module.exports = {
-  generateToken,
   verifyToken,
+  generateToken,
 };
